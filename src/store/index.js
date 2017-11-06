@@ -4,10 +4,9 @@ import * as types from './mutation-types'
 
 Vue.use(Vuex)
 
-const initialState = {
+const state = {
   articleList: []
 }
-const state = Object.assign({}, initialState)
 
 const getters = {
   articleList: state => state.articleList
@@ -28,7 +27,7 @@ const actions = {
 const mutations = {
   [types.ADD_ARTICLE] ({ state }, payload) {
     const now = new Date()
-    this.state.articleList.push({
+    this.state.articleList.unshift({
       text: payload.text,
       createdAt: now,
       updatedAt: now,
