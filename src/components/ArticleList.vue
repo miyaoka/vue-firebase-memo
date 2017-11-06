@@ -1,8 +1,14 @@
 <template>
   <div>
-    <div v-if="items.length > 0">
+    <div>
+      <text-editor
+        @submit="ADD_ARTICLE"
+      />
+    </div>
+    <hr>
+    <div v-if="articleList.length > 0">
       <article-item
-        v-for="(item, i) in items"
+        v-for="(item, i) in articleList"
         v-bind:key="item.id"
         :item="item"
       >
@@ -15,26 +21,28 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import * as types from '@/store/mutation-types'
 import ArticleItem from '@/components/ArticleItem'
+import TextEditor from '@/components/TextEditor'
 
 export default {
   name: 'ArticleList',
   data () {
     return {
-
     }
   },
   components: {
-    ArticleItem
+    ArticleItem,
+    TextEditor
   },
-  props: {
-    items: {
-      type: Array,
-      required: true,
-      default: function () {
-        return []
-      }
-    }
+  computed: {
+    ...mapState(['articleList'])
+  },
+  methods: {
+    ...mapActions([
+      types.ADD_ARTICLE
+    ])
   }
 }
 </script>
