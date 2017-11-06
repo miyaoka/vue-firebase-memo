@@ -41,8 +41,8 @@ export default {
       this.$emit('submit', this.textInput)
       this.textInput = ''
     },
-    handleCmdEnter: function (e) {
-      if ((e.metaKey || e.ctrlKey)) {
+    handleCmdEnter (e) {
+      if (!this.isSubmitDisabled && (e.metaKey || e.ctrlKey)) {
         this.submitText()
       }
     }
