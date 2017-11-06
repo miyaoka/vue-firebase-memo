@@ -32,7 +32,7 @@ const mutations = {
       text: payload.text,
       createdAt: now,
       updatedAt: now,
-      id: now.toString()
+      id: now.getTime()
     })
   },
   [types.UPDATE_ARTICLE] ({ state }, payload) {
