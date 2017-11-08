@@ -8,8 +8,8 @@
     <hr>
     <div v-if="articleList.length > 0">
       <article-item
-        v-for="(item, i) in articleList"
-        v-bind:key="item.id"
+        v-for="(item, i) in articleListReverse"
+        :key="item['.key']"
         :item="item"
       >
       </article-item>
@@ -37,7 +37,11 @@ export default {
     TextEditor
   },
   computed: {
-    ...mapState(['articleList'])
+    ...mapState(['articleList']),
+    articleListReverse () {
+      return [...this.articleList].reverse()
+    }
+
   },
   methods: {
     ...mapActions([

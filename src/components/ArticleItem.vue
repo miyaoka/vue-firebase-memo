@@ -5,7 +5,7 @@
         :text="item.text"
         @submit="updateItem"
       />
-      <button @click="REMOVE_ARTICLE(item.id)">
+      <button @click="removeItem(item)">
         Delete
       </button>
     </div>
@@ -59,9 +59,13 @@ export default {
     updateItem (value) {
       this.onEdit = false
       this.UPDATE_ARTICLE({
-        id: this.item.id,
+        item: this.item,
         text: value
       })
+    },
+    removeItem (item) {
+      this.onEdit = false
+      this.REMOVE_ARTICLE(item)
     }
   },
   filters: {

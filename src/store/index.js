@@ -1,8 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import firebase from 'firebase'
+import { firebaseMutations, firebaseAction } from 'vuexfire'
 import * as types from './mutation-types'
+import firebaseConfig from '../../config/firebase'
+
+const firebaseApp = firebase.initializeApp(firebaseConfig)
+const db = firebaseApp.database()
+const articleRef = db.ref('articles')
 
 Vue.use(Vuex)
+
+const initActions = store => store.dispatch(types.BIND_ARTICLE)
+const getKey = item => item['.key']
 
 const state = {
   articleList: []
@@ -13,48 +23,41 @@ const getters = {
 }
 
 const actions = {
-  [types.ADD_ARTICLE] ({ commit }, text) {
-    commit(types.ADD_ARTICLE, { text })
-  },
-  [types.UPDATE_ARTICLE] ({ commit }, { id, text }) {
-    commit(types.UPDATE_ARTICLE, { id, text })
-  },
-  [types.REMOVE_ARTICLE] ({ commit }, id) {
-    commit(types.REMOVE_ARTICLE, { id })
-  }
+  [types.BIND_ARTICLE]: firebaseAction(({ bindFirebaseRef }) => {
+    bindFirebaseRef('articleList', articleRef, { wait: true })
+  }),
+  [types.ADD_ARTICLE]: firebaseAction((commit, text) => {
+    const now = new Date().getTime()
+    articleRef.push({
+      text: text,
+      createdAt: now,
+      updatedAt: now
+    })
+  }),
+  [types.UPDATE_ARTICLE]: firebaseAction(({ commit }, { item, text }) => {
+    articleRef.child(getKey(item)).update({
+      text: text,
+      updatedAt: new Date().getTime()
+    })
+  }),
+  [types.REMOVE_ARTICLE]: firebaseAction(({ commit }, item) => {
+    articleRef.child(getKey(item)).remove()
+  })
 }
 
 const mutations = {
-  [types.ADD_ARTICLE] ({ state }, payload) {
-    const now = new Date()
-    this.state.articleList.unshift({
-      text: payload.text,
-      createdAt: now,
-      updatedAt: now,
-      id: now.getTime()
-    })
-  },
-  [types.UPDATE_ARTICLE] ({ state }, payload) {
-    const idx = this.state.articleList.findIndex(article => article.id === payload.id)
-    if (idx < 0) return
-    Vue.set(this.state.articleList, idx,
-      Object.assign(this.state.articleList[idx], {
-        text: payload.text,
-        updatedAt: new Date()
-      })
-    )
-  },
-  [types.REMOVE_ARTICLE] ({ state }, payload) {
-    this.state.articleList = this.state.articleList.filter(article => article.id !== payload.id)
-  }
+  ...firebaseMutations
 }
+
+const plugins = [initActions]
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state,
   getters,
   mutations,
-  actions
+  actions,
+  plugins
 })
 
 export default store
