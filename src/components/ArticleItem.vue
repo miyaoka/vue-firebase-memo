@@ -13,9 +13,14 @@
       </text-editor>
     </div>
     <div v-else>
-      <span>
+      <router-link
+        :to="{
+          name: 'status',
+          params: { key: item['.key'] }
+        }"
+      >
         {{item.updatedAt | formatDate}}
-      </span>
+      </router-link>
       <el-button
         type="text"
         icon="el-icon-edit"

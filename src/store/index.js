@@ -21,6 +21,7 @@ const state = {
 
 const getters = {
   articleList: state => state.articleList,
+  articleStatus: state => key => state.articleList.find(article => article['.key'] === key),
   isReadyArticle: state => state.isReadyArticle
 }
 
