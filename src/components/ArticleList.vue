@@ -6,7 +6,13 @@
       />
     </div>
     <hr>
-    <div v-if="articleList.length > 0">
+    <div v-if="!isReadyArticle">
+      Loading...
+    </div>
+    <div v-else-if="articleList.length > 0">
+      <h3>
+        total: {{articleList.length}}件
+      </h3>
       <article-item
         v-for="(item, i) in articleListReverse"
         :key="item['.key']"
@@ -37,7 +43,10 @@ export default {
     TextEditor
   },
   computed: {
-    ...mapState(['articleList']),
+    ...mapState([
+      'articleList',
+      'isReadyArticle'
+    ]),
     articleListReverse () {
       return [...this.articleList].reverse()
     }

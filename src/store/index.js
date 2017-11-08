@@ -15,16 +15,21 @@ const initActions = store => store.dispatch(types.BIND_ARTICLE)
 const getKey = item => item['.key']
 
 const state = {
-  articleList: []
+  articleList: [],
+  isReadyArticle: false
 }
 
 const getters = {
-  articleList: state => state.articleList
+  articleList: state => state.articleList,
+  isReadyArticle: state => state.isReadyArticle
 }
 
 const actions = {
-  [types.BIND_ARTICLE]: firebaseAction(({ bindFirebaseRef }) => {
-    bindFirebaseRef('articleList', articleRef, { wait: true })
+  [types.BIND_ARTICLE]: firebaseAction(({bindFirebaseRef, commit}) => {
+    bindFirebaseRef('articleList', articleRef, {
+      wait: true,
+      readyCallback: () => commit(types.READY_ARTICLE, true)
+    })
   }),
   [types.ADD_ARTICLE]: firebaseAction((commit, text) => {
     const now = new Date().getTime()
@@ -46,7 +51,10 @@ const actions = {
 }
 
 const mutations = {
-  ...firebaseMutations
+  ...firebaseMutations,
+  [types.READY_ARTICLE] ({ state }, payload) {
+    this.state.isReadyArticle = payload
+  }
 }
 
 const plugins = [initActions]
