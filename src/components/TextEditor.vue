@@ -1,17 +1,19 @@
 <template>
   <form @submit.prevent="submitText">
-    <textarea
-      type="text"
+    <el-input
+      type="textarea"
+      :autosize="{ minRows: 2 }"
       v-model.trim="textInput"
-      @keydown.enter="handleCmdEnter($event)"
+      @keydown.enter.native="handleCmdEnter($event)"
     >
-    </textarea>
-    <button
-      type="submit"
+    </el-input>
+    <el-button
+      type="success"
+      icon="el-icon-success"
       :disabled="isSubmitDisabled"
-    >
-      Submit
-    </button>
+      @click="submitText"
+    >Submit</el-button>
+    <slot />
   </form>
 </template>
 

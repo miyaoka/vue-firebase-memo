@@ -1,26 +1,31 @@
 <template>
-  <div>
+  <el-card>
     <div v-if="onEdit">
       <text-editor
         :text="item.text"
         @submit="updateItem"
-      />
-      <button @click="removeItem(item)">
-        Delete
-      </button>
+      >
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          @click="removeItem(item)"
+        ></el-button>
+      </text-editor>
     </div>
     <div v-else>
       <span>
-        {{item.text}}
-      </span>
-      <span>
         {{item.updatedAt | formatDate}}
       </span>
-      <button @click="editItem(item)">
-        Edit
-      </button>
+      <el-button
+        type="text"
+        icon="el-icon-edit"
+        @click="editItem(item)"
+      ></el-button>
+      <div
+        v-html="htmlText"
+      ></div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -46,6 +51,11 @@ export default {
       default: function () {
         return {}
       }
+    }
+  },
+  computed: {
+    htmlText () {
+      return this.item.text.replace(/\n/g, '<br>')
     }
   },
   methods: {
