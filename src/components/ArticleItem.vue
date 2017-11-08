@@ -79,7 +79,7 @@ export default {
     }
   },
   filters: {
-    formatDate: function (value) {
+    formatDate (value) {
       if (!value) return ''
       return moment(value).format('YYYY/MM/DD HH:mm:ss')
     }
