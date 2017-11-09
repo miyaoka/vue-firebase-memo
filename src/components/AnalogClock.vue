@@ -78,8 +78,11 @@ export default {
     date () {
       return new Date(this.time)
     },
-    hour () {
+    hours () {
       return this.date.getHours()
+    },
+    minutes () {
+      return this.date.getMinutes()
     },
     center () {
       return this.size / 2
@@ -88,7 +91,7 @@ export default {
       return {
         'stroke-width': this.lineWidth,
         stroke: this.lineColor,
-        fill: this.hour < 6 || this.hour >= 18 ? this.fillColorDark : this.fillColorLight
+        fill: this.hours < 6 || this.hours >= 18 ? this.fillColorDark : this.fillColorLight
       }
     },
     clockhandStyle () {
@@ -101,10 +104,10 @@ export default {
       return `translate(${this.center} ${this.center})`
     },
     hourhandTrans () {
-      return `${this.translateCenter} rotate(${(this.hour % 12) * 360 / 12})`
+      return `${this.translateCenter} rotate(${(this.hours % 12 + this.minutes / 60) * 360 / 12})`
     },
     minitehandTrans () {
-      return `${this.translateCenter} rotate(${this.date.getMinutes() * 360 / 60})`
+      return `${this.translateCenter} rotate(${this.minutes * 360 / 60})`
     }
   },
   methods: {
