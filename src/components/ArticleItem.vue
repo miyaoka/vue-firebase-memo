@@ -1,41 +1,60 @@
 <template>
   <el-card>
-    <div v-if="onEdit">
+    <router-link
+      :to="{
+        name: 'status',
+        params: { key: item['.key'] }
+      }"
+    >
+      <analog-clock
+        :size="48"
+        :lineWidth="2"
+        :time="item.updatedAt"
+      ></analog-clock>
+      {{item.updatedAt | formatDate}}
+    </router-link>
+
+    <el-popover
+      ref="popover"
+      placement="bottom"
+      v-model="isEditMenuVisible">
+      <el-menu
+        style="border-right:none"
+      >
+        <el-menu-item
+          index="1"
+          @click="editItem(item)"
+        >
+          <i class="el-icon-edit"></i>
+          <span>Edit</span>
+        </el-menu-item>
+        <el-menu-item
+          index="2"
+          @click="removeItem(item)"
+        >
+          <i class="el-icon-delete"></i>
+          <span>Remove</span>
+        </el-menu-item>
+      </el-menu>
+    </el-popover>
+
+    <el-button
+      type="text"
+      icon="el-icon-arrow-down"
+      style="float: right; padding: 3px 0"
+      v-popover:popover>
+    </el-button>
+
+    <div
+      v-html="htmlText"
+    ></div>
+
+    <el-dialog title="Edit" :visible.sync="onEdit">
       <text-editor
         :text="item.text"
         @submit="updateItem"
-      >
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          @click="removeItem(item)"
-        ></el-button>
-      </text-editor>
-    </div>
-    <div v-else>
-      <router-link
-        :to="{
-          name: 'status',
-          params: { key: item['.key'] }
-        }"
-      >
-    <analog-clock
-      :size="32"
-      :lineWidth="2"
-      :time="item.updatedAt"
-    ></analog-clock>
-
-        {{item.updatedAt | formatDate}}
-      </router-link>
-      <el-button
-        type="text"
-        icon="el-icon-edit"
-        @click="editItem(item)"
-      ></el-button>
-      <div
-        v-html="htmlText"
-      ></div>
-    </div>
+      ></text-editor>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -54,7 +73,8 @@ export default {
   },
   data () {
     return {
-      onEdit: false
+      onEdit: false,
+      isEditMenuVisible: false
     }
   },
   props: {
@@ -95,8 +115,22 @@ export default {
       })
     },
     removeItem (item) {
-      this.onEdit = false
-      this.REMOVE_ARTICLE(item)
+      this.$confirm('本当に削除しますか？', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.REMOVE_ARTICLE(item)
+        this.$message({
+          type: 'success',
+          message: 'Delete completed'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        })
+      })
     }
   },
   filters: {
