@@ -1,20 +1,24 @@
 <template>
-  <form @submit.prevent="submitText">
-    <el-input
-      type="textarea"
-      :autosize="{ minRows: 2 }"
-      v-model.trim="textInput"
-      @keydown.enter.native="handleCmdEnter($event)"
-    >
-    </el-input>
-    <el-button
-      type="success"
-      icon="el-icon-success"
-      :disabled="isSubmitDisabled"
-      @click="submitText"
-    >Submit</el-button>
-    <slot />
-  </form>
+  <el-form>
+    <el-form-item>
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 3 }"
+        v-model.trim="textInput"
+        @keydown.enter.native="handleCmdEnter($event)"
+      >
+      </el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button
+        type="success"
+        :disabled="isSubmitDisabled"
+        @click="submitText"
+        size="medium"
+        icon="el-icon-circle-check"
+      >Submit</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
