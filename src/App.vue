@@ -32,4 +32,8 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.el-dialog,
+.el-message-box {
+  width: 80%;
+}
 </style>
