@@ -68,7 +68,15 @@ export default {
   },
   computed: {
     htmlText () {
-      return this.item.text.replace(/\n/g, '<br>')
+      return this.item.text.replace(/[&'`"<>\n]/g, match => ({
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '\n': '<br>'
+      }[match]))
     }
   },
   methods: {
