@@ -11,8 +11,9 @@
     </div>
     <div v-else-if="articleList.length > 0">
       <h3>
-        total: {{articleList.length}}件
+        Public timeline (total: {{articleList.length}}件)
       </h3>
+      <p>誰でも書き込めます</p>
       <article-item
         v-for="(item, i) in articleListReverse"
         :key="item['.key']"

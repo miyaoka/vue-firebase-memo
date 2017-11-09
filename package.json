@@ -19,6 +19,7 @@
     "firebase": "^4.6.1",
     "moment": "^2.19.1",
     "vue": "^2.5.2",
+    "vue-awesome": "^2.3.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuexfire": "^2.3.0"

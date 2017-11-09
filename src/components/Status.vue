@@ -1,9 +1,12 @@
 <template>
   <div>
-    <h1>
-      <router-link :to="{ name: 'Home' }">Home</router-link>
-      / Status
-    </h1>
+    <h2>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ name: 'Home' }">Home</el-breadcrumb-item>
+        <el-breadcrumb-item>Status</el-breadcrumb-item>
+      </el-breadcrumb>
+    </h2>
+
     <div v-if="!isReadyArticle">
       Loading...
     </div>

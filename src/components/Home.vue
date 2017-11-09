@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h1>Home</h1>
     <div>
-      <article-list
-      />
+      <article-list/>
     </div>
   </div>
 </template>
