@@ -19,6 +19,12 @@
           params: { key: item['.key'] }
         }"
       >
+    <analog-clock
+      :size="32"
+      :lineWidth="2"
+      :time="item.updatedAt"
+    ></analog-clock>
+
         {{item.updatedAt | formatDate}}
       </router-link>
       <el-button
@@ -38,11 +44,13 @@ import moment from 'moment'
 import { mapActions } from 'vuex'
 import * as types from '@/store/mutation-types'
 import TextEditor from '@/components/TextEditor'
+import AnalogClock from '@/components/AnalogClock'
 
 export default {
   name: 'ArticleItem',
   components: {
-    TextEditor
+    TextEditor,
+    AnalogClock
   },
   data () {
     return {
